@@ -1,5 +1,4 @@
-import { ArrowLeft, Search } from "lucide-react";
-import Link from "next/link";
+import { Search } from "lucide-react";
 import { Suspense } from "react";
 
 import BookCard from "@/components/Books/BookCard";
