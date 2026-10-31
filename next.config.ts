@@ -11,10 +11,10 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    agentFeedback: true,
+    agentFeedback: false,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
+  cacheComponents: false,
+  partialPrefetching: false,
   turbopack: {
     rules: {
       "*.css": {

@@ -1,17 +1,14 @@
 import { ArrowRight} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import BookCard from "../Books/BookCard";
 import Link from "next/link";
 
-
-export const dynamic = "force-dynamic";
 
 export default async function FeaturedBooks() {
   const res = await fetch("http://localhost:5000/books?limit=6", {
       cache: "no-store",
     });
-    const booksData = await res.json()
+    const data = await res.json();
 
   return (
     <section
@@ -33,14 +30,14 @@ export default async function FeaturedBooks() {
         </Link>
       </div>
 
-      {!booksData ? (
+      {!data ? (
         <p className="border border-destructive/40 bg-destructive/5 p-8 text-destructive">
           
             No books are available on the shelf yet.
         </p>
       ) : (
         <div className="grid gap-8 md:grid-cols-3">
-          {booksData.map((book:bookType) => (
+          {data.map((book:bookType) => (
               <BookCard key={book._id} book={book}/> 
           ))}
         </div>

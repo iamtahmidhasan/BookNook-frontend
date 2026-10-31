@@ -131,7 +131,7 @@
     @apply font-sans;
   }
 
-  body {
+  .bg-bg,body {
     background-image: radial-gradient(
       color-mix(in srgb, var(--foreground) 7%, transparent) 0.6px,
       transparent 0.6px
