@@ -1,32 +1,8 @@
-import { ArrowRight, BookOpen } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import BookCard from "../Books/BookCard";
-
-type ApiBook = {
-  _id?: string;
-  title?: string;
-  author?: string;
-  year?: string | number;
-  publicationYear?: string | number;
-  genre?: string;
-  coverImage?: string;
-};
-
-type Book = {
-  id: string;
-  title: string;
-  author: string;
-  year: string;
-  genre: string;
-  coverImage?: string;
-  cover: string;
-  ink: string;
-  accent: string;
-};
-
-
+import Link from "next/link";
 
 
 export const dynamic = "force-dynamic";
@@ -51,10 +27,10 @@ export default async function FeaturedBooks() {
             Featured for your next chapter.
           </h2>
         </div>
-        <Button variant="link" className="w-fit px-0 text-sm">
+        <Link href="/books" className="w-fit px-0 text-sm flex gap-2">
           View all books
           <ArrowRight />
-        </Button>
+        </Link>
       </div>
 
       {!booksData ? (
