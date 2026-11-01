@@ -81,7 +81,7 @@ export default async function MyBorrowsPage() {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/borrows/${encodeURIComponent(session.user.email)}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/borrows/${encodeURIComponent(session.user.email)}`,
       { cache: "no-store" },
     );
 
@@ -120,7 +120,7 @@ export default async function MyBorrowsPage() {
         }
 
         const bookResponse = await fetch(
-          `http://localhost:5000/book/${encodeURIComponent(borrowedBook.borrow.bookId)}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/book/${encodeURIComponent(borrowedBook.borrow.bookId)}`,
           { cache: "no-store" },
         );
 
@@ -208,12 +208,16 @@ export default async function MyBorrowsPage() {
                   <p className="text-xs font-medium uppercase tracking-[0.16em] text-primary">
                     Borrowed book
                   </p>
+                  <Link href={`/book/${book?._id}`}>
+                  
+                  
                   <h2 className="mt-3 font-heading text-3xl leading-tight tracking-[-0.04em]">
                     {book?.title ||
                       borrow.title ||
                       borrow.bookTitle ||
                       "Book record"}
                   </h2>
+                  </Link>
                   <p className="mt-2 inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
                     Quantity: {quantity}
                   </p>

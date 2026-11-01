@@ -12,6 +12,7 @@ import { email, json } from "better-auth";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import BorrowBookButton from "@/components/Books/BorrowBookButton";
+import EditBook from "@/components/Books/EditBook";
 
 export default async function BookPage({
   params,
@@ -19,12 +20,15 @@ export default async function BookPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   let book;
 
   try {
     const response = await fetch(
-      `http://localhost:5000/book/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/book/${id}`,
       { cache: "no-store" }
     );
 
@@ -132,7 +136,7 @@ export default async function BookPage({
                 </span>
                 <span className="text-sm">
                   {book.ownerName || "N/A"}
-                  {book.ownerEmail && (
+                  {session?.user?.email === book.ownerEmail && (
                     <span className="block text-xs text-muted-foreground">
                       {book.ownerEmail}
                     </span>
@@ -146,8 +150,14 @@ export default async function BookPage({
             {book.description}
           </p>
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-end">
             <BorrowBookButton availableCopies={book.availableCopies} id={id as string}/>
+            {session?.user?.email === book.ownerEmail && (
+              <EditBook
+                id={id}
+                book={book}
+              />
+            )}
 
             <p className="flex items-center text-sm text-muted-foreground">
               Borrowing is available for up to 14 days.

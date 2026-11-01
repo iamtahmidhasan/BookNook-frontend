@@ -50,7 +50,7 @@ export default function ReturnBorrowBookButton({
     setIsReturning(true);
 
     try {
-      const response = await fetch("http://localhost:5000/return", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/return`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

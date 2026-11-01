@@ -11,7 +11,7 @@ export default async function MyBooksPage() {
     headers: await headers() // you need to pass the headers object.
 })
 const ownerEmail = session?.user.email
-  const res = await fetch(`http://localhost:5000/my-books/${ownerEmail}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-books/${ownerEmail}`)
   const books = await res.json()
   if(!res.ok){
     throw error("something went worng")

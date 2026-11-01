@@ -32,7 +32,7 @@ export default function BorrowBookButton({id,availableCopies}:{id:string, availa
       return;
     }
 
-    const res = await fetch(`http://localhost:5000/borrows`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrows`,{
       method: "POST",
       headers: {
           "Content-Type": "application/json",

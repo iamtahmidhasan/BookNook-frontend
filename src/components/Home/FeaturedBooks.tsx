@@ -5,7 +5,7 @@ import Link from "next/link";
 
 
 export default async function FeaturedBooks() {
-  const res = await fetch("http://localhost:5000/books?limit=6", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books?limit=6`, {
       cache: "no-store",
     });
     const data = await res.json();

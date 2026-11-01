@@ -41,7 +41,7 @@ export default function AddBookPage() {
       console.log(data)
       const { data: session, error } = await authClient.getSession()
       console.log("user id is here",session?.user.name)
-      const response = await fetch("http://localhost:5000/add", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
