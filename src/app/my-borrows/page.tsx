@@ -232,9 +232,7 @@ export default async function MyBorrowsPage() {
               {book && (
                 <div className="mt-6 grid grid-cols-2 gap-3 border-t border-border pt-5 text-sm sm:grid-cols-4">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">
-                      Category
-                    </p>
+                    <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">Category</p>
                     <p className="mt-1">{book.category || "Not specified"}</p>
                   </div>
                   <div>
