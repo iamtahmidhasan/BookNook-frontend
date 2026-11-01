@@ -13,6 +13,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import BorrowBookButton from "@/components/Books/BorrowBookButton";
 import EditBook from "@/components/Books/EditBook";
+import DeleteBook from "@/components/Books/DeleteBook";
 
 export default async function BookPage({
   params,
@@ -151,17 +152,19 @@ export default async function BookPage({
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-end">
-            <BorrowBookButton availableCopies={book.availableCopies} id={id as string}/>
-            {session?.user?.email === book.ownerEmail && (
-              <EditBook
-                id={id}
-                book={book}
+            {session?.user?.email !== book.ownerEmail && (
+              <BorrowBookButton
+                availableCopies={book.availableCopies}
+                id={id as string}
               />
             )}
+            {session?.user?.email === book.ownerEmail && (
+              <>
+                <EditBook id={id} book={book} />
+                <DeleteBook id={id} ownerEmail={book.ownerEmail} />
+              </>
+            )}
 
-            <p className="flex items-center text-sm text-muted-foreground">
-              Borrowing is available for up to 14 days.
-            </p>
           </div>
         </div>
       </article>

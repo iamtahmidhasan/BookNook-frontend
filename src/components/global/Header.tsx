@@ -1,8 +1,9 @@
 "use client";
 
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Moon, Search, Sun, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useTheme } from "next-themes";
 
 import { signOut, useSession } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,6 +32,7 @@ const Links = [
 
 export default function Header() {
   const { data: session } = useSession();
+  const { setTheme, resolvedTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const userName = session?.user?.name || session?.user?.email || "Reader";
@@ -63,15 +65,25 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="lg" className="hidden sm:inline-flex">
+          <Button variant="ghost"  className="border border-border">
             <Search />
-            Search library
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="border border-border"
+            aria-label="Toggle theme"
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+          >
+            <Sun className="hidden dark:block" />
+            <Moon className="block dark:hidden" />
           </Button>
 
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Open account menu">
+                <Button  variant="ghost" size="icon" aria-label="Open account menu">
                   <Avatar>
                     <AvatarImage
                       src={session.user.image || undefined}
@@ -126,7 +138,7 @@ export default function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden border border-border"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen((open) => !open)}
