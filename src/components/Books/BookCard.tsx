@@ -1,5 +1,4 @@
 import { ArrowRight, BookOpen } from "lucide-react";
-import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,12 +13,11 @@ export default function BookCard({ book }: BookCardProps) {
       <Link href={`/book/${book._id}`}>
         <div className="relative aspect-[3/4] overflow-hidden border border-border bg-muted">
           {book.coverImage ? (
-            <Image
+            <img
               src={book.coverImage}
               alt={`Cover of ${book.title}`}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              // sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover h-full w-auto aspect-[3/4] transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="flex h-full flex-col justify-between bg-[#c6b59a] p-6 text-[#29241e]">
@@ -48,6 +46,11 @@ export default function BookCard({ book }: BookCardProps) {
             <p className="mt-2 text-xs uppercase tracking-[0.14em] text-muted-foreground">
               {book.category} · {book.publishedYear}
             </p>
+            {(book.ownerName || book.ownerEmail) && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Owner: {book.ownerName || "N/A"} {book.ownerEmail ? `(${book.ownerEmail})` : ""}
+              </p>
+            )}
           </div>
           <Button
             variant="outline"

@@ -8,6 +8,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { email, json } from "better-auth";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import BorrowBookButton from "@/components/Books/BorrowBookButton";
 
 export default async function BookPage({
   params,
@@ -41,18 +45,17 @@ export default async function BookPage({
     notFound();
   }
 
+  
+
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-16 lg:px-10 lg:py-28">
       <article className="grid gap-12 lg:grid-cols-[minmax(280px,420px)_1fr] lg:gap-20">
         <div className="relative aspect-[3/4] overflow-hidden border border-border bg-[#c6b59a]">
           {book.coverImage ? (
-            <Image
+            <img
               src={book.coverImage}
               alt={`Cover of ${book.title}`}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 420px"
-              className="object-cover"
+              className="object-cover aspect-[3/4] h-full w-auto"
             />
           ) : (
             <div className="flex h-full flex-col justify-between p-8 text-[#29241e]">
@@ -88,7 +91,7 @@ export default async function BookPage({
             {book.author}
           </p>
 
-          <div className="mt-10 grid max-w-xl grid-cols-2 gap-6 border-y border-border py-6 sm:grid-cols-4">
+          <div className="mt-10 grid max-w-xl grid-cols-2 gap-6 border-y border-border py-6 sm:grid-cols-5">
             <div className="flex flex-col gap-2">
               <CalendarDays className="size-4 text-primary" />
               <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">
@@ -120,6 +123,23 @@ export default async function BookPage({
               </span>
               <span>{book.availableCopies} copies</span>
             </div>
+
+            {(book.ownerName || book.ownerEmail) && (
+              <div className="flex flex-col gap-2">
+                <UserRound className="size-4 text-primary" />
+                <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">
+                  Owner
+                </span>
+                <span className="text-sm">
+                  {book.ownerName || "N/A"}
+                  {book.ownerEmail && (
+                    <span className="block text-xs text-muted-foreground">
+                      {book.ownerEmail}
+                    </span>
+                  )}
+                </span>
+              </div>
+            )}
           </div>
 
           <p className="mt-8 max-w-2xl text-lg leading-8 text-muted-foreground">
@@ -127,9 +147,7 @@ export default async function BookPage({
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" className="h-12 px-7">
-              Borrow this book
-            </Button>
+            <BorrowBookButton availableCopies={book.availableCopies} id={id as string}/>
 
             <p className="flex items-center text-sm text-muted-foreground">
               Borrowing is available for up to 14 days.

@@ -9,6 +9,7 @@ interface bookType {
     language: string,
     publishedYear: number,
     totalCopies: number,
-    availableCopies: 5,
-    owner: string
+    availableCopies: number,
+    ownerName?: string,
+    ownerEmail?: string
 }

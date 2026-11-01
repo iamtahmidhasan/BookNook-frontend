@@ -25,7 +25,7 @@ const Links = [
   {
     id: 2,
     text: "My Books",
-    href: "/books",
+    href: "/my-books",
   },
 ];
 
@@ -90,7 +90,13 @@ export default function Header() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/books">My books</Link>
+                  <Link href="/my-books">My books</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/my-borrows">My Borrows</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/add">Add books</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   variant="destructive"
