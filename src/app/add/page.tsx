@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { object } from "better-auth";
 import { authClient } from "@/lib/auth-client";
 import { auth } from "@/lib/auth";
+import GetTokenFromClient from "@/components/Books/GetTokenFromClient";
 
 type BookForm = {
   title: string;
@@ -40,11 +41,13 @@ export default function AddBookPage() {
       const data = Object.fromEntries(formData)
       console.log(data)
       const { data: session, error } = await authClient.getSession()
+      const jwtToken = await GetTokenFromClient()
       console.log("user id is here",session?.user.name)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
         },
         body: JSON.stringify({
           ...data, 

@@ -14,6 +14,7 @@ import { headers } from "next/headers";
 import BorrowBookButton from "@/components/Books/BorrowBookButton";
 import EditBook from "@/components/Books/EditBook";
 import DeleteBook from "@/components/Books/DeleteBook";
+import GetTokenFromServer from "@/components/Books/GetTokenFromServer";
 
 export default async function BookPage({
   params,
@@ -26,11 +27,16 @@ export default async function BookPage({
   });
 
   let book;
+  const jwtToken = await GetTokenFromServer()
+  console.log(jwtToken?.token)
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/book/${id}`,
-      { cache: "no-store" }
+      `${process.env.NEXT_PUBLIC_API_URL}/book/${id}`,{
+      headers: {
+      "Authorization": `Bearer ${jwtToken?.token}`
+    }
+      }
     );
 
     if (response.status === 404) {

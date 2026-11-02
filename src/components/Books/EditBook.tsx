@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Pencil } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
+import GetTokenFromClient from "./GetTokenFromClient";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -67,13 +68,17 @@ export default function EditBook({ book, id }: EditBookProps) {
 
     try {
       const { data: session } = await authClient.getSession();
+      const jwtToken = await GetTokenFromClient();
       if (session?.user?.email !== book.ownerEmail) {
         throw new Error("Only the book owner can edit this book.");
       }
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/book/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
         body: JSON.stringify({
           ...form,
           publishedYear: Number(form.publishedYear),

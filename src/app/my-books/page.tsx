@@ -5,13 +5,19 @@ import BookCard from "@/components/Books/BookCard";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { error } from "next/dist/build/output/log";
+import GetTokenFromServer from "@/components/Books/GetTokenFromServer";
 
 export default async function MyBooksPage() {
   const session = await auth.api.getSession({
     headers: await headers() // you need to pass the headers object.
 })
 const ownerEmail = session?.user.email
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-books/${ownerEmail}`)
+  const jwtToken = await GetTokenFromServer()
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-books/${ownerEmail}`, {
+    headers: {
+      Authorization: `Bearer ${jwtToken?.token}`,
+    },
+  })
   const books = await res.json()
   if(!res.ok){
     throw error("something went worng")

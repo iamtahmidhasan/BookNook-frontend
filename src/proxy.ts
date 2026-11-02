@@ -15,5 +15,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/my-books","/book/:path*","/my-borrows"], // Specify the routes the middleware applies to
+  matcher: ["/my-books","/book/:path*","/my-borrows","/add"], // Specify the routes the middleware applies to
 };

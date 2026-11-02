@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
+import GetTokenFromClient from "./GetTokenFromClient";
 
 type ReturnBorrowBookButtonProps = {
   id: string;
@@ -37,8 +38,9 @@ export default function ReturnBorrowBookButton({
 
     const { data: session, error: sessionError } =
       await authClient.getSession();
+    const jwtToken = await GetTokenFromClient();
 
-    if (sessionError || !session?.user) {
+    if (sessionError || !session?.user || !jwtToken) {
       toast.add({
         title: "Unable to return book",
         description: "Please sign in again and try once more.",
@@ -54,6 +56,7 @@ export default function ReturnBorrowBookButton({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
         },
         body: JSON.stringify({
           user: session.user.name,

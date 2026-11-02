@@ -14,8 +14,8 @@ function BooksLoading() {
 
 export default async function BooksPage() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
-    cache: "no-store",
-  });
+    cache: "no-store",}
+  );
   const data = await response.json();
 
   return (

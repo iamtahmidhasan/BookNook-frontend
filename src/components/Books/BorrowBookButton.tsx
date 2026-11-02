@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/toast";
+import GetTokenFromClient from "./GetTokenFromClient";
 
 export default function BorrowBookButton({id,availableCopies}:{id:string, availableCopies: number}) {
     const router = useRouter();
@@ -27,8 +28,9 @@ export default function BorrowBookButton({id,availableCopies}:{id:string, availa
 
     const handleBorrow = async() =>{
     const { data: session, error } = await authClient.getSession()
+    const jwtToken = await GetTokenFromClient();
 
-    if (error || !session?.user || quantity < 1 || quantity > availableCopies) {
+    if (error || !session?.user || !jwtToken || quantity < 1 || quantity > availableCopies) {
       return;
     }
 
@@ -36,6 +38,7 @@ export default function BorrowBookButton({id,availableCopies}:{id:string, availa
       method: "POST",
       headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
       },
       body: JSON.stringify({
         user:session?.user.name,

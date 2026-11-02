@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 
 import ReturnBorrowBookButton from "@/components/Books/ReturnBorrowBookButton";
 import { auth } from "@/lib/auth";
+import GetTokenFromServer from "@/components/Books/GetTokenFromServer";
 
 type BorrowRecord = {
   _id?: string;
@@ -80,9 +81,15 @@ export default async function MyBorrowsPage() {
   let borrowedBooks: BorrowedBook[] = [];
 
   try {
+    const jwtToken = await GetTokenFromServer();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/borrows/${encodeURIComponent(session.user.email)}`,
-      { cache: "no-store" },
+      {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${jwtToken?.token}`,
+        },
+      },
     );
 
     if (!response.ok) {
@@ -121,7 +128,12 @@ export default async function MyBorrowsPage() {
 
         const bookResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/book/${encodeURIComponent(borrowedBook.borrow.bookId)}`,
-          { cache: "no-store" },
+          {
+            cache: "no-store",
+            headers: {
+              Authorization: `Bearer ${jwtToken?.token}`,
+            },
+          },
         );
 
         if (!bookResponse.ok) {

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { authClient } from "@/lib/auth-client";
+import GetTokenFromClient from "./GetTokenFromClient";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -29,7 +30,8 @@ export default function DeleteBook({ id, ownerEmail }: DeleteBookProps) {
 
   async function handleDelete() {
     const { data: session } = await authClient.getSession();
-    if (session?.user?.email !== ownerEmail) {
+    const jwtToken = await GetTokenFromClient();
+    if (session?.user?.email !== ownerEmail || !jwtToken) {
       return;
     }
 
@@ -38,6 +40,9 @@ export default function DeleteBook({ id, ownerEmail }: DeleteBookProps) {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/book/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
       });
 
       if (!response.ok) {
