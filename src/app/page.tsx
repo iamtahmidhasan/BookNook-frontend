@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import FeaturedBooks from "@/components/Home/FeaturedBooks";
 import HeroSection from "@/components/Home/HeroSection";
+import BookNookFeatures from "@/components/Home/BookNookFeatures";
+import HowBorrowingWorks from "@/components/Home/HowBorrowingWorks";
 
 export default function Home() {
   return (
@@ -17,7 +19,8 @@ export default function Home() {
       >
         <FeaturedBooks />
       </Suspense>
-      
+      <HowBorrowingWorks />
+      <BookNookFeatures />
     </>
   );
 }

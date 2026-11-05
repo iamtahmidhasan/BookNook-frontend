@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import { toast } from "@/components/ui/toast";
 
 export default function SignupPage() {
   const handleGithubSignUp = async () => {
@@ -21,6 +22,11 @@ export default function SignupPage() {
 
     if (error) {
       console.error("GitHub sign-up failed.", error);
+      toast.add({
+        title: "Unable to sign up with GitHub",
+        description: error.message || "Please try again.",
+        type: "error",
+      });
     }
   };
 
@@ -37,10 +43,20 @@ export default function SignupPage() {
     const { data, error } = await authClient.signUp.email({ ...user });
     if (data) {
       console.log(data);
+      toast.add({
+        title: "Account created",
+        description: "Welcome to BookNook.",
+        type: "success",
+      });
       redirect("/");
     }
     if (error) {
       console.log(error);
+      toast.add({
+        title: "Sign up failed",
+        description: error.message || "Please check your information and try again.",
+        type: "error",
+      });
     }
   };
   return (

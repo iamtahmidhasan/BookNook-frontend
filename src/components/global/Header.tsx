@@ -2,7 +2,8 @@
 
 import { Menu, Moon, Search, Sun, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
 import { signOut, useSession } from "@/lib/auth-client";
@@ -23,51 +24,96 @@ const Links = [
     text: "Browse All",
     href: "/books",
   },
+];
+const protectedLink = [
   {
-    id: 2,
+    id: 1,
     text: "My Books",
     href: "/my-books",
+  },
+  {
+    id: 2,
+    text: "Add Books",
+    href: "/add",
+  },
+  {
+    id: 3,
+    text: "My borrows",
+    href: "/my-borrows",
   },
 ];
 
 export default function Header() {
   const { data: session } = useSession();
   const { setTheme, resolvedTheme } = useTheme();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    if (!isHomePage) {
+      return;
+    }
+
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isHomePage]);
 
   const userName = session?.user?.name || session?.user?.email || "Reader";
-  const initials = userName.charAt(0)
+  const initials = userName.charAt(0);
 
   async function handleSignOut() {
     await signOut();
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur-sm">
+    <header
+      className={`${
+        isHomePage ? "fixed" : "sticky"
+      } top-0 z-50 w-full border-b text-foreground transition-colors duration-300 ${
+        isHomePage && !isScrolled && !isMenuOpen
+          ? "border-transparent bg-transparent text-white"
+          : "border-border/80 bg-background/95 backdrop-blur-sm"
+      }`}
+    >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-      <Link
-        href="/"
-        className="font-heading text-2xl font-semibold tracking-[-0.04em]"
-      >
-        BookNook<span className="text-primary">.</span>
-      </Link>
+        <Link
+          href="/"
+          className="font-heading text-2xl font-semibold tracking-[-0.04em]"
+        >
+          BookNook<span className="text-primary">.</span>
+        </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
+        <nav className="hidden items-center gap-8 text-sm opacity-80 md:flex">
           {Links.map((link) => (
             <Link
               key={link.id}
-              className="transition-colors hover:text-foreground"
+              className="transition-colors hover:opacity-100"
               href={link.href}
             >
               {link.text}
             </Link>
           ))}
+          {
+            session?.user && protectedLink.map((link) => (
+            <Link
+              key={link.id}
+              className="transition-colors hover:opacity-100"
+              href={link.href}
+            >
+              {link.text}
+            </Link>
+          ))
+          }
         </nav>
 
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
-            className="border border-border"
+            className="border-current/40"
             render={<Link href="/search" aria-label="Search library" />}
           >
             <Search />
@@ -76,9 +122,11 @@ export default function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="border border-border"
+            className="border-current/40"
             aria-label="Toggle theme"
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
           >
             <Sun className="hidden dark:block" />
             <Moon className="block dark:hidden" />
@@ -87,7 +135,11 @@ export default function Header() {
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button  variant="ghost" size="icon" aria-label="Open account menu">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Open account menu"
+                >
                   <Avatar>
                     <AvatarImage
                       src={session.user.image || undefined}
@@ -126,7 +178,7 @@ export default function Header() {
             <div className="hidden items-center gap-2 sm:flex">
               <Link
                 href="/login"
-                className="px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                className="px-3 py-2 text-sm opacity-80 transition-opacity hover:opacity-100"
               >
                 Log in
               </Link>

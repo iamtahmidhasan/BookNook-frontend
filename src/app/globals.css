@@ -143,4 +143,24 @@
     background: var(--primary);
     color: var(--primary-foreground);
   }
+
+  .booknook-hero-swiper .swiper-pagination {
+    bottom: 1.5rem;
+    text-align: left;
+    padding-inline: 2rem;
+  }
+
+  .booknook-hero-swiper .swiper-pagination-bullet {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--muted-foreground);
+    opacity: 0.4;
+  }
+
+  .booknook-hero-swiper .swiper-pagination-bullet-active {
+    width: 1.5rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    opacity: 1;
+  }
 }

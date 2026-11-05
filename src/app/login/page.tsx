@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { GitBranch, LockKeyhole, Mail } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "@/components/ui/toast";
 
 export default function LoginPage() {
   const handleGithubSignIn = async () => {
@@ -15,10 +16,20 @@ export default function LoginPage() {
 
     if (error) {
       console.error("GitHub sign-in failed.", error);
+      toast.add({
+        title: "Unable to sign in with GitHub",
+        description: error.message || "Please try again.",
+        type: "error",
+      });
     }
   };
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+    function showToast() {
+    const id = toast.add({
+      title: "Welcome back",
+    //   description: "",
+    })}
     e.preventDefault()
         const formData = new FormData(e.target)
         const user = Object.fromEntries(formData.entries()) as {email:string,password:string}
@@ -28,10 +39,16 @@ export default function LoginPage() {
         })
         if(data){
             console.log(data)
+            showToast()
             redirect("/")
         }
         if(error){
             console.log(error)
+            toast.add({
+              title: "Sign in failed",
+              description: error.message || "Check your email and password.",
+              type: "error",
+            });
         }
   };
   return (
