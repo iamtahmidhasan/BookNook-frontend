@@ -158,6 +158,9 @@ export default function Header() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                  <Link href="/account">Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href="/my-books">My books</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

@@ -36,7 +36,7 @@ export default function SignupPage() {
     const user = Object.fromEntries(formData.entries()) as {
       name: string;
       email: string;
-      avater: string;
+      image: string;
       password: string;
     };
     console.log(user);
@@ -107,13 +107,13 @@ export default function SignupPage() {
           </label>
           <label className="block">
             <span className="mb-2 block text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
-              Avater URL
+              Avatar URL
             </span>
             <span className="relative block">
               <LinkIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 required
-                name="avater"
+                name="image"
                 type="url"
                 placeholder="you@example.com"
                 className="h-11 w-full border border-input bg-background pl-10 pr-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20"
