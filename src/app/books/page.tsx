@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import BookCard from "@/components/Books/BookCard";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function BooksLoading() {
   return (
@@ -32,10 +33,13 @@ export default async function BooksPage() {
             Browse every title on the shelf and find something worth borrowing.
           </p>
         </div>
+        <Link href="/search">
+        
         <Button variant="outline" size="lg">
           <Search />
           Search library
         </Button>
+        </Link>
       </div>
 
       <Suspense fallback={<BooksLoading />}>

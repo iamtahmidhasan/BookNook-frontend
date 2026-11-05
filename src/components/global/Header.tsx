@@ -65,7 +65,11 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost"  className="border border-border">
+          <Button
+            variant="ghost"
+            className="border border-border"
+            render={<Link href="/search" aria-label="Search library" />}
+          >
             <Search />
           </Button>
 
@@ -162,7 +166,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="#browse"
+              href="/search"
               onClick={() => setIsMenuOpen(false)}
               className="border-b border-border/60 px-3 py-5 font-heading text-3xl tracking-[-0.03em] text-foreground transition-colors hover:text-primary"
             >
